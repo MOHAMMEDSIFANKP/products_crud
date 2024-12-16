@@ -1,0 +1,18 @@
+
+/* home */
+.home .table .images{
+    object-fit: contain;
+}
+
+/* .home .table td{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.home .table tbody{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+} */
