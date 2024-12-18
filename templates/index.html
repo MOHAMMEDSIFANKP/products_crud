@@ -3,8 +3,10 @@
 
 {% block body %}
 <div class="p-5 home">
-    <div class="d-flex justify-content-end align-items-center">
+    <div class="d-flex justify-content-between align-items-center">
         <a href="{%url 'add_products'%}" class="btn btn-outline-primary">Add Products</a>
+        <p>{{request.user.username}}</p>
+        <a href="{%url 'signout'%}" class="btn btn-outline-danger">SignOut</a>
     </div>
     <table class="table">
         <thead>
