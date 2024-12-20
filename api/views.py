@@ -25,6 +25,45 @@ def signin(request):
             return redirect('signin')
     return render(request, 'login.html')
 
+def signup(request):
+    if request.method == 'POST':
+        try:
+            first_name = request.POST.get('first_name', '').strip()
+            last_name = request.POST.get('last_name', '').strip()
+            username = request.POST.get('username', '').strip()
+            email = request.POST.get('email', '').strip()
+            password = request.POST.get('password', '').strip()
+            
+            if not username or not password:
+                messages.error(request, "Username and password are required.")
+                return redirect('signup')
+            
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "This username already exists.")
+                return redirect('signup')
+            
+            if email and User.objects.filter(email=email).exists():
+                messages.error(request, "This email is already in use.")
+                return redirect('signup')
+
+            user = User.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                username=username,
+                password=password
+            )
+
+            login(request, user)
+            messages.success(request, "Account created successfully!")
+            return redirect('home')
+
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            return redirect('signup')
+    
+    return render(request, 'signup.html')
+
 @login_required(login_url='signin')
 def signout(request):
     logout(request)
@@ -33,7 +72,7 @@ def signout(request):
 @login_required(login_url='signin')
 def home(request):
     dicts = {
-        "products":Product.objects.all()
+        "products":Product.objects.all(),
     }
     return render(request, 'index.html',dicts)
 
